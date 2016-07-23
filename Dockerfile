@@ -13,7 +13,8 @@ ENV MAVEN_VERSION 3.3.9
 LABEL io.k8s.description="Platform for building and running Spring Boot applications" \
       io.k8s.display-name="Spring Boot Maven 3" \
       io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,java,java8,maven,maven3,springboot"
+      io.openshift.tags="builder,java,java8,maven,maven3,springboot" \
+       io.openshift.s2i.destination="/opt/s2i/destination"
 
 RUN yum update -y && \
   yum install -y curl && \

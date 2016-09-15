@@ -21,11 +21,11 @@ echo "---> Installing application sourcein $(pwd)"
 cp -Rf /tmp/src/. ./
 ls ./
 echo "---> Building Spring Boot application from source"
-if [ -f "mvnw" ]; then
-  ./mvnw clean install
-else
-  mvn package
-fi
+#if [ -f "mvnw" ]; then
+#  ./mvnw clean install
+#else
+mvn package
+#fi
 
 # Fix source directory permissions
 fix-permissions ./

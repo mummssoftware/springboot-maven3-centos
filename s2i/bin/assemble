@@ -17,12 +17,12 @@ function restore_saved_artifacts() {
 #restore_saved_artifacts
 
 
-echo "---> Installing application sourcein $(pwd) with path to pom.xml being $PATH2POM "
+echo "---> Installing application sourcein $(pwd) with path to pom.xml being $PATH2BOOT "
 cp -Rf /tmp/src/. ./
-if [ -n "$PATH2POM" ];
+if [ -n "$PATH2BOOT" ];
  then
-   echo "path to pom.xml is set to $PATH2POM";
-   cd ./$PATH2POM;
+   echo "path to pom.xml is set to $PATH2BOOT";
+   cd ./$PATH2BOOT;
  else 
    echo "path to pom.xml is not set -- defaulting to root directory of source";
 fi

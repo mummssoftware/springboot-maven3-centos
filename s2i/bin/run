@@ -2,5 +2,14 @@
 
 set -e
 
+echo "---> Running application in $(pwd) with path to boot project being $PATH2BOOT "
+if [ -n "$PATH2BOOT" ];
+ then
+   echo "path to boot is set to $PATH2BOOT";
+   cd ./$PATH2BOOT;
+ else 
+   echo "path to boot is not set ";
+fi
+
 echo "---> Starting Spring Boot application"
 java -jar $JAVA_OPTS `find target -name *.jar`

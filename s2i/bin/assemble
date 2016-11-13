@@ -19,6 +19,14 @@ function restore_saved_artifacts() {
 
 echo "---> Installing application sourcein $(pwd)"
 cp -Rf /tmp/src/. ./
+if [ -z ${PATH2POM} ];
+ then
+   echo "path to pom.xml is set to $PATH2POM";
+   cd ./$PATH2POM;
+ else 
+   echo "path to pom.xml is not set -- defaulting to root directory of source";
+fi
+
 ls ./
 echo "---> Building Spring Boot application from source"
 if [ -f "mvnw" ]; then

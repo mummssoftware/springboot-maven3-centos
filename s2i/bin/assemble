@@ -27,7 +27,15 @@ if [ -n "$PATH2POM" ];
    echo "path to pom.xml is not set -- defaulting to root directory of source";
 fi
 
-ls ./
+MAVEN_OPTS=""
+if [ "$SKIP_TESTS" == "true" ];
+  then
+    echo "Skipping tests in maven build..";
+    MAVEN_OPTS=" -DskipTests "
+  else
+    echo "Will run Unit Tests in maven build..";
+fi
+
 echo "---> Building Spring Boot application from source"
 
 #Spring Boot projects often come with a mvnw wrapper, but if the environment is not setup with Maven correctly,

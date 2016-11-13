@@ -31,7 +31,7 @@ ENV MAVEN_HOME /usr/share/maven
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
 RUN mkdir -p /opt/s2i/destination && \
-      chown -R 1001:0 /opt/app-root && \
+      chown -R 1001:0 /opt/ && \
       chmod -R g+rw /opt/s2i/destination
 USER 1001
 

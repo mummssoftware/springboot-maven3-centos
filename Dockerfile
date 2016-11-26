@@ -27,6 +27,12 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bina
 ENV JAVA_HOME /usr/lib/jvm/java
 ENV MAVEN_HOME /usr/share/maven
 
+#install filebeat to send logs to an ELK server (see example https://www.digitalocean.com/community/tutorials/how-to-install-elasticsearch-logstash-and-kibana-elk-stack-on-centos-7#set-up-filebeat-(add-client-servers))
+
+ADD ./filebeat/elastic-beats.repo /etc/yum.repos.d/elastic-beats.repo
+
+RUN  rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch && yum -y install filebeat
+
 # Add configuration files, bashrc and other tweaks
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 

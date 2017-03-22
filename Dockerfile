@@ -13,8 +13,7 @@ ENV MAVEN_VERSION 3.3.9
 LABEL io.k8s.description="Platform for building and running Spring Boot applications" \
       io.k8s.display-name="Spring Boot Maven 3" \
       io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,java,java8,maven,maven3,springboot" \
-      io.openshift.s2i.destination="/opt/s2i/destination"
+      io.openshift.tags="builder,java,java8,maven,maven3,springboot" 
 
 RUN yum update -y && \
   yum install -y curl && \
@@ -23,8 +22,7 @@ RUN yum update -y && \
 
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
   && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
-  &&  mkdir -p /opt/s2i/destination
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn 
 
 ENV JAVA_HOME /usr/lib/jvm/java
 ENV MAVEN_HOME /usr/share/maven
@@ -32,9 +30,7 @@ ENV MAVEN_HOME /usr/share/maven
 # Add configuration files, bashrc and other tweaks
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN mkdir -p /opt/s2i/destination && \
-      chown -R 1001:0 /opt/app-root && \
-      chmod -R g+rw /opt/s2i/destination 
+RUN chown -R 1001:0 /opt/app-root 
 
 USER 1001
 

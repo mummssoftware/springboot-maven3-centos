@@ -34,7 +34,7 @@ COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
 RUN mkdir -p /opt/s2i/destination && \
       chown -R 1001:0 /opt/app-root && \
-      chmod -R g+rw /opt/s2i/destination && \
+      chmod -R g+rw /opt/s2i/destination && 
 USER 1001
 
 # Set the default CMD to print the usage of the language image

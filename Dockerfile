@@ -30,7 +30,8 @@ ENV MAVEN_HOME /usr/share/maven
 # Add configuration files, bashrc and other tweaks
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN chown -R 1001:0 /opt/app-root 
+RUN chown -R 1001:0 /opt/app-root && \
+    chmod 775 $STI_SCRIPTS_PATH/*
 
 USER 1001
 

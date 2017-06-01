@@ -2,6 +2,8 @@
 
 set -e
 
+FILEBEAT_HOME=/etc/filebeat/
+
 if [ -n "$ELK_HOST" ];
   then
     echo "---> Starting Filebeat to ship logs to logstash at host $ELK_HOST"

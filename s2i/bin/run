@@ -25,4 +25,5 @@ if [ -n "$PATH2BOOT" ];
 fi
 
 echo "---> Starting Spring Boot application"
-java -jar $JAVA_OPTS `find target -name *.jar`
+java -jar -Dlogging.file=/opt/spring/logs/boot.log
+ $JAVA_OPTS `find target -name *.jar`

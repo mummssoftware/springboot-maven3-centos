@@ -2,6 +2,17 @@
 
 set -e
 
+if [ -n "$ELK_HOST" ];
+  then
+    echo "---> Starting Filebeat to ship logs to logstash at host $ELK_HOST"
+    sed -i.bak s/"ELK_HOST"/"$ELK_HOST"/ $FILEBEAT_HOME/filebeat.yml
+    filebeat -e -c $FILEBEAT_HOME/filebeat.yml &
+  else
+    echo "ELK host not set up, therefore not shipping logs to ELK.."
+fi
+
+
+
 echo "---> Running application in $(pwd) with path to boot project being $PATH2BOOT "
 if [ -n "$PATH2BOOT" ];
  then

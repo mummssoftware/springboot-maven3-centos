@@ -1,0 +1,19 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /opt/spring/logs/*.log
+      input_type: log
+      document_type: spring-boot
+#  registry_file: /var/lib/filebeat/registry
+
+output:
+  logstash:
+    hosts: ["ELK_HOST:5044"]
+    bulk_max_size: 1024
+    tls:
+      certificate_authorities: ["/etc/pki/tls/certs/logstash-forwarder.crt"]
+shipper:
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB

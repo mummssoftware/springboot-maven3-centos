@@ -38,9 +38,10 @@ RUN  rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch && yum -y ins
 # Add configuration files, bashrc and other tweaks
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN mkdir -p /opt/s2i/destination && \
+RUN mkdir -p /opt/s2i/destination && mkdir -p /opt/spring/logs/ && \
       chown -R 1001:0 /opt/ /etc/filebeat && \
       chmod -R a+rwx /etc/filebeat && \
+      chmod -R a+rwx /opt/spring/logs && \
       chmod -R g+rw /opt/s2i/destination
 USER 1001
 

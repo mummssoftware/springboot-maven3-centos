@@ -22,8 +22,9 @@ echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
 
 echo "---> Building Spring Boot application from source. JAVA_OPTS is $JAVA_OPTS"
-if [ -f "mvnw" ]; then
-  ./mvnw clean install $JAVA_OPTS
+
+if [ -f "build.gradle" ]; then
+  ./gradlew build $JAVA_OPTS
 else
   mvn clean install $JAVA_OPTS
 fi

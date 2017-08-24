@@ -3,4 +3,14 @@
 set -e
 
 echo "---> Starting Spring Boot application"
-java -jar $JAVA_OPTS `find target -name *.jar`
+
+
+if [ -d "build" ]; then
+    #gradle build
+    JAR_LOCATION="build"
+else
+    #maven build
+    JAR_LOCATION="target"
+fi
+
+java -jar $JAVA_OPTS `find $JAR_LOCATION -name *.jar`

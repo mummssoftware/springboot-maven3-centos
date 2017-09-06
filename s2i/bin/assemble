@@ -15,7 +15,7 @@ function restore_saved_artifacts() {
   fi
 }
 
-restore_saved_artifacts
+restore_saved_artifacts || true
 
 
 echo "---> Installing application source"

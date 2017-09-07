@@ -14,7 +14,7 @@ else
 fi
 if [[ -n $(find $JAR_LOCATION -name *.war) ]]
 then
-    mvn $JAVA_OPTS spring-boot:run
+    mvn spring-boot:run -Drun.jvmArguments="$JAVA_OPTS"
 else
     java -jar $JAVA_OPTS `find $JAR_LOCATION -name *.jar`
 fi

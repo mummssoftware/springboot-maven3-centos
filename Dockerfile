@@ -17,7 +17,8 @@ LABEL io.k8s.description="Platform for building and running Spring Boot applicat
       io.openshift.tags="builder,java,java8,maven,maven3,springboot" 
 
 RUN yum update -y && \
-  yum install -y curl epel-release nodejs && \
+  yum install -y curl epel-release nodejs npm && \
+  npm install -g node-gyp bower && \
   yum install -y java-$JAVA_VERSON-openjdk java-$JAVA_VERSON-openjdk-devel && \
   yum clean all
 

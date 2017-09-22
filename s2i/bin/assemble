@@ -23,9 +23,6 @@ cp -Rf /tmp/src/. ./
 
 echo "---> Building Spring Boot application from source. JAVA_OPTS is $JAVA_OPTS"
 
-npm install || true
-bower update || true
-bower install || true
 
 
 if [ -f "build.gradle" ]; then

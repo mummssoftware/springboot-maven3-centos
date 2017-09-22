@@ -22,7 +22,13 @@ RUN yum update -y && \
   yum install -y --skip-broken nodejs npm && \
   npm install -g node-gyp bower && \
   yum install -y java-$JAVA_VERSON-openjdk java-$JAVA_VERSON-openjdk-devel && \
-  yum clean all
+  yum clean all -y
+
+#these packages are installed just for pasbe, so that the mhf binary can work
+RUN INSTALL_PKGS=" glibc-devel.i686 ncurses-libs.i686 libxml2-devel.i686 " && \
+    yum install -y --enablerepo=centosplus $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum clean all -y 
 
 RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
   && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \

@@ -37,7 +37,7 @@ fi
 # Fix source directory permissions
 fix-permissions ./
 
-# remove temp files Spring might use in build
-rm /tmp/*.log
+# remove temp files created during in build
+find /tmp/ -user `whoami` -delete
 
 echo "finished assemble script.."

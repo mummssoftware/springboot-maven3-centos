@@ -3,35 +3,32 @@
 echo "starting assemble script.."
 set -e
 
-# restore maven dependencies downloaded in a previous build,
-# so they do not have to be downloaded again.
-# /opt/s2i/destination/artifacts will only be present in the incremental build scenario
-# in which the target image name is an existing docker image which contains
-# dependencies from a prior build execution.
-function restore_saved_artifacts() {
-  if [ "$(ls -A /tmp/artifacts/ 2>/dev/null)" ]; then
-    echo -n "Restoring saved artifacts from prior build..."
-    mv /tmp/artifacts/* /tmp/artifacts/.[!.]* $HOME/.
+for artifact_path in .m2 .gradle .target; do
+  echo "---> Restore /tmp/artififacts/${artifact_path} to \$HOME (${HOME})"
+  if [ "$(ls /tmp/artifacts/{artifact_path} 2>/dev/null)" ]; then
+      mv /tmp/artifacts/{artifact_path} $HOME
+  else
+    echo "--> none present"
   fi
-}
-
-restore_saved_artifacts
-
+done
 
 echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
 
-echo "---> Building Spring Boot application from source. JAVA_OPTS is $JAVA_OPTS"
+echo "---> Building Spring Boot application from source"
+echo "--> # MVN_ARGS = $MVN_ARGS"
 
 npm install || true
 bower update || true
 bower install || true
 
-
 if [ -f "build.gradle" ]; then
+  echo "--> # JAVA_OPTS = $JAVA_OPTS"
   ./gradlew build $JAVA_OPTS
+elif [ -f "mvnw" ]; then
+  ./mvnw clean install $MVN_ARGS
 else
-  mvn clean install $JAVA_OPTS
+  mvn clean install $MVN_ARGS
 fi
 
 # Fix source directory permissions

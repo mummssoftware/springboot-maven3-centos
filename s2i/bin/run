@@ -2,8 +2,8 @@
 
 set -e
 
+APP_TARGET=${APP_TARGET:-target}
 echo "---> Starting Spring Boot application"
-
 
 if [ -d "build" ]; then
     #gradle build
@@ -12,9 +12,15 @@ else
     #maven build
     JAR_LOCATION="target"
 fi
-if [[ -n $(find $JAR_LOCATION -name *.war) ]]
-then
+
+echo "--> # JAR_LOCATION = $JAR_LOCATION"
+echo "--> # APP_TARGET = $APP_TARGET"
+echo "--> # JAVA_OPTS = $JAVA_OPTS"
+
+if [[ -n $(find $JAR_LOCATION -name *.war) ]]; then
+	echo "---> Running application using mvn spring-boot:run..."
     mvn spring-boot:run -Drun.jvmArguments="$JAVA_OPTS"
 else
-    java -jar $JAVA_OPTS `find $JAR_LOCATION -name *.jar`
+    echo "---> Running application from standalone jar/war..."
+    java $JAVA_OPTS -jar `find $APP_TARGET -maxdepth 1 -regex ".*\(jar\|war\)"`
 fi

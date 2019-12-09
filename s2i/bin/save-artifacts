@@ -1,14 +1,20 @@
 #!/bin/bash -e
 
+#The output of this script has to all be appropriate for tar.
+#No debugging (at least to stdout) is allowed
+#I am not sure how stderr is handled
+
+echoerr() { echo "$@" 1>&2; }
+
 pushd ${HOME} > /dev/null
 artifact_path=""
 for artifact_path in .m2 .gradle .target; do
   if [ -d ${artifact_path} ]; then 
-    #echo "$(pwd)/${artifact_path} present, adding to tar source."
+    echoerr "$(pwd)/${artifact_path} present, adding to tar source."
     tar_sources+=" $artifact_path"
   fi
 done
-echo "tar_sources=${tar_sources}"
+echoerr "tar_sources=${tar_sources}"
 if [ -n "${tar_sources}" ]; then
   tar cf - ${tar_sources}
 fi

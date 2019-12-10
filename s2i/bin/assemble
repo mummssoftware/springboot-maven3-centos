@@ -27,14 +27,14 @@ echo "--> # JAVA_OPTS = $JAVA_OPTS"
 echo "--> # MVN_ARGS = $MVN_ARGS"
 echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
 
-if [ -z ${MVN_ARGS+set} -a -n ${JAVA_OPTS+set} ]
+if [ -z ${MVN_ARGS+set} && -n ${JAVA_OPTS+set} ]; then
   echo "--> MVN_ARGS was not set but JAVA_OPTS was"
   echo "--> setting MVN_ARGS to JAVA_OPTS"
   echo '--> if this is not what you want set MVN_ARGS to ""'
   MVN_ARGS=${JAVA_OPTS}
 fi
 
-if [ -z ${GRADLE_ARGS+set} -a -n ${JAVA_OPTS+set} ]
+if [ -z ${GRADLE_ARGS+set} && -n ${JAVA_OPTS+set} ]; then
   echo "--> GRADLE_ARGS was not set but JAVA_OPTS was"
   echo "--> setting GRADLE_ARGS to JAVA_OPTS"
   echo '--> if this is not what you want set GRADLE_ARGS to ""'

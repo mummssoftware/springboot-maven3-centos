@@ -27,14 +27,14 @@ echo "--> # JAVA_OPTS = $JAVA_OPTS"
 echo "--> # MVN_ARGS = $MVN_ARGS"
 echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
 
-if [ -z ${MVN_ARGS+set} && -n ${JAVA_OPTS+set} ]; then
+if [[ -z ${MVN_ARGS+set} && -n ${JAVA_OPTS+set} ]]; then
   echo "--> MVN_ARGS was not set but JAVA_OPTS was"
   echo "--> setting MVN_ARGS to JAVA_OPTS"
   echo '--> if this is not what you want set MVN_ARGS to ""'
   MVN_ARGS=${JAVA_OPTS}
 fi
 
-if [ -z ${GRADLE_ARGS+set} && -n ${JAVA_OPTS+set} ]; then
+if [[ -z ${GRADLE_ARGS+set} && -n ${JAVA_OPTS+set} ]]; then
   echo "--> GRADLE_ARGS was not set but JAVA_OPTS was"
   echo "--> setting GRADLE_ARGS to JAVA_OPTS"
   echo '--> if this is not what you want set GRADLE_ARGS to ""'
@@ -45,7 +45,7 @@ if [ -f "build.gradle" ]; then
   echo "--> Found build.gradle, using gradle"
   echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
   ./gradlew build $JAVA_OPTS
-elif [ -f "mvnw" -a -d "src/.mvn" ]; then
+elif [[ -f "mvnw" && -d "src/.mvn" ]]; then
   echo "--> Project provides mvn wrapper, mvnw, and src/.mvn exists using it instead of calling mvn directly"
   ./mvnw clean install $MVN_ARGS
 else

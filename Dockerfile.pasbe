@@ -1,4 +1,4 @@
-FROM: spring-boot-builder-v2:latest
+FROM spring-boot-builder-v2:latest
 
 #these packages are installed just for pasbe, so that the mhf binary can work
 RUN INSTALL_PKGS=" glibc-devel.i686 ncurses-libs.i686 libxml2-devel.i686 " && \

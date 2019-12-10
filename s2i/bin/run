@@ -1,23 +1,19 @@
 #!/bin/bash
-
 set -e
-
-APP_TARGET=${APP_TARGET:-target}
-echo "---> Starting Spring Boot application"
 
 if [ -d "build" ]; then
     #gradle build
-    JAR_LOCATION="build"
+    APP_TARGET=${APP_TARGET:-build}
 else
     #maven build
-    JAR_LOCATION="target"
+    APP_TARGET=${APP_TARGET:-target}
 fi
 
-echo "--> # JAR_LOCATION = $JAR_LOCATION"
+echo "---> Starting Spring Boot application"
 echo "--> # APP_TARGET = $APP_TARGET"
 echo "--> # JAVA_OPTS = $JAVA_OPTS"
 
-if [[ -n $(find $JAR_LOCATION -name *.war) ]]; then
+if [[ -n $(find $APP_TARGET -name *.war) ]]; then
 	echo "---> Running application using mvn spring-boot:run..."
     mvn spring-boot:run -Drun.jvmArguments="$JAVA_OPTS"
 else

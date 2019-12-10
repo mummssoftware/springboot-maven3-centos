@@ -15,17 +15,38 @@ done
 echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
 
-echo "---> Building Spring Boot application from source"
-echo "--> # MVN_ARGS = $MVN_ARGS"
+if [ -e bower.json ]; then
+  echo "---> Found bower.json, installing bower"
+  npm install
+  bower update
+  bower install
+fi
 
-npm install || true
-bower update || true
-bower install || true
+echo "---> Building Spring Boot application from source"
+echo "--> # JAVA_OPTS = $JAVA_OPTS"
+echo "--> # MVN_ARGS = $MVN_ARGS"
+echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
+
+if [ -z ${MVN_ARGS+set} -a -n ${JAVA_OPTS+set} ]
+  echo "--> MVN_ARGS was not set but JAVA_OPTS was"
+  echo "--> setting MVN_ARGS to JAVA_OPTS"
+  echo '--> if this is not what you want set MVN_ARGS to ""'
+  MVN_ARGS=${JAVA_OPTS}
+fi
+
+if [ -z ${GRADLE_ARGS+set} -a -n ${JAVA_OPTS+set} ]
+  echo "--> GRADLE_ARGS was not set but JAVA_OPTS was"
+  echo "--> setting GRADLE_ARGS to JAVA_OPTS"
+  echo '--> if this is not what you want set GRADLE_ARGS to ""'
+  GRADLE_ARGS=${JAVA_OPTS}
+fi
 
 if [ -f "build.gradle" ]; then
-  echo "--> # JAVA_OPTS = $JAVA_OPTS"
+  echo "--> Found build.gradle, using gradle"
+  echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
   ./gradlew build $JAVA_OPTS
-elif [ -f "mvnw" ]; then
+elif [ -f "mvnw" -a -d "src/.mvn" ]; then
+  echo "--> Project provides mvn wrapper, mvnw, and src/.mvn exists using it instead of calling mvn directly"
   ./mvnw clean install $MVN_ARGS
 else
   mvn clean install $MVN_ARGS

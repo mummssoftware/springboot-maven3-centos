@@ -12,11 +12,5 @@ fi
 echo "---> Starting Spring Boot application"
 echo "--> # APP_TARGET = $APP_TARGET"
 echo "--> # JAVA_OPTS = $JAVA_OPTS"
-
-if [[ -n $(find $APP_TARGET -name *.war) ]]; then
-	echo "---> Running application using mvn spring-boot:run..."
-    mvn spring-boot:run -Drun.jvmArguments="$JAVA_OPTS"
-else
-    echo "---> Running application from standalone jar/war..."
-    java $JAVA_OPTS -jar `find $APP_TARGET -maxdepth 1 -regex ".*\(jar\|war\)"`
-fi
+echo "---> Running application from standalone jar/war..."
+java $JAVA_OPTS -jar `find $APP_TARGET -maxdepth 1 -regex ".*\(jar\|war\)"`

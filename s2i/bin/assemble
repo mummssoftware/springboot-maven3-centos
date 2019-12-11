@@ -5,7 +5,7 @@ set -e
 
 for artifact_path in .m2 .gradle .target; do
   echo "---> Restore /tmp/artififacts/${artifact_path} to \$HOME (${HOME})"
-  if [ "$(ls /tmp/artifacts/{artifact_path} 2>/dev/null)" ]; then
+  if [ -d ${artifact_path} ]; then 
       mv /tmp/artifacts/{artifact_path} $HOME
   else
     echo "--> none present"

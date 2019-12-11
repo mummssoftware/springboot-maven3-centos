@@ -44,7 +44,7 @@ fi
 if [ -f "build.gradle" ]; then
   echo "--> Found build.gradle, using gradle"
   echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
-  ./gradlew build $JAVA_OPTS
+  ./gradlew build $GRADLE_ARGS
 elif [[ -f "mvnw" && -d "src/.mvn" ]]; then
   echo "--> Project provides mvn wrapper, mvnw, and src/.mvn exists using it instead of calling mvn directly"
   ./mvnw clean install $MVN_ARGS

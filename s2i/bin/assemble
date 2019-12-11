@@ -3,35 +3,53 @@
 echo "starting assemble script.."
 set -e
 
-# restore maven dependencies downloaded in a previous build,
-# so they do not have to be downloaded again.
-# /opt/s2i/destination/artifacts will only be present in the incremental build scenario
-# in which the target image name is an existing docker image which contains
-# dependencies from a prior build execution.
-function restore_saved_artifacts() {
-  if [ "$(ls -A /tmp/artifacts/ 2>/dev/null)" ]; then
-    echo -n "Restoring saved artifacts from prior build..."
-    mv /tmp/artifacts/* /tmp/artifacts/.[!.]* $HOME/.
+for artifact_path in .m2 .gradle .target; do
+  echo "---> Restore /tmp/artififacts/${artifact_path} to \$HOME (${HOME})"
+  if [ -d ${artifact_path} ]; then 
+      mv /tmp/artifacts/{artifact_path} $HOME
+  else
+    echo "--> none present"
   fi
-}
-
-restore_saved_artifacts
-
+done
 
 echo "---> Installing application source"
 cp -Rf /tmp/src/. ./
 
-echo "---> Building Spring Boot application from source. JAVA_OPTS is $JAVA_OPTS"
+if [ -e bower.json ]; then
+  echo "---> Found bower.json, installing bower"
+  npm install
+  bower update
+  bower install
+fi
 
-npm install || true
-bower update || true
-bower install || true
+echo "---> Building Spring Boot application from source"
+echo "--> # JAVA_OPTS = $JAVA_OPTS"
+echo "--> # MVN_ARGS = $MVN_ARGS"
+echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
 
+if [[ -z ${MVN_ARGS+set} && -n ${JAVA_OPTS+set} ]]; then
+  echo "--> MVN_ARGS was not set but JAVA_OPTS was"
+  echo "--> setting MVN_ARGS to JAVA_OPTS"
+  echo '--> if this is not what you want set MVN_ARGS to ""'
+  MVN_ARGS=${JAVA_OPTS}
+fi
+
+if [[ -z ${GRADLE_ARGS+set} && -n ${JAVA_OPTS+set} ]]; then
+  echo "--> GRADLE_ARGS was not set but JAVA_OPTS was"
+  echo "--> setting GRADLE_ARGS to JAVA_OPTS"
+  echo '--> if this is not what you want set GRADLE_ARGS to ""'
+  GRADLE_ARGS=${JAVA_OPTS}
+fi
 
 if [ -f "build.gradle" ]; then
-  ./gradlew build $JAVA_OPTS
+  echo "--> Found build.gradle, using gradle"
+  echo "--> # GRADLE_ARGS = $GRADLE_ARGS"
+  ./gradlew build $GRADLE_ARGS
+elif [[ -f "mvnw" && -d "src/.mvn" ]]; then
+  echo "--> Project provides mvn wrapper, mvnw, and src/.mvn exists using it instead of calling mvn directly"
+  ./mvnw clean install $MVN_ARGS
 else
-  mvn clean install $JAVA_OPTS
+  mvn clean install $MVN_ARGS
 fi
 
 # Fix source directory permissions

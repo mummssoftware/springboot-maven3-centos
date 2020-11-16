@@ -16,8 +16,7 @@ LABEL io.k8s.description="Platform for building and running Spring Boot applicat
       io.openshift.expose-services="8080:http" \
       io.openshift.tags="builder,java,java8,maven,maven3,springboot" 
 
-RUN yum update -y && \
-  yum install -y --skip-broken curl epel-release  && \
+RUN yum install -y --skip-broken curl epel-release  && \
   curl -sL https://rpm.nodesource.com/setup_6.x |  bash - && \
   yum install -y --skip-broken nodejs npm && \
   npm install -g node-gyp bower && \
